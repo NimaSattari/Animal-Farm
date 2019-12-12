@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
     [Range( 0.1f , 120f)]
-    [SerializeField] float secondsBetweemSpawns = 2f;
+    [SerializeField] float secondsBetweemSpawns1 = 2f, secondsBetweemSpawns2 = 10f;
     [SerializeField] EnemyMovement enemyPrefab;
     [SerializeField] Transform enemyParentTransform;
     [SerializeField] Text spwnedEnemies;
@@ -23,14 +21,14 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator RepeatedlySpawnEnemies()
     {
-        while (true)
+        while (Time.deltaTime <= 10)
         {
             score++;
             GetComponent<AudioSource>().PlayOneShot(spawnedEnemySFX);
             spwnedEnemies.text = score.ToString();
             var newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
             newEnemy.transform.parent = enemyParentTransform;
-            yield return new WaitForSeconds(secondsBetweemSpawns);
+            yield return new WaitForSeconds(Random.Range(secondsBetweemSpawns1,secondsBetweemSpawns2));
         }
     }
 }
